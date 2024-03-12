@@ -1,0 +1,19 @@
+
+---
+- name: Copy Dockerfile and build Docker image
+  hosts: localhost
+  connection: local  
+  become: true
+  tasks:
+    - name: Copy Dockerfile to a specific location
+      copy:
+        src: /home/faseeh/Docker/dockerfile
+        dest: /home/faseeh/Docker2/dockerfile
+    - name: Build Docker image
+      shell: docker build -t ubuntu:latest /home/faseeh/Docker2
+      args:
+        chdir: /home/faseeh/Docker2
+    - name: Run Docker container
+      shell: docker run -d --name mycontainer ubuntu:latest
+
+
