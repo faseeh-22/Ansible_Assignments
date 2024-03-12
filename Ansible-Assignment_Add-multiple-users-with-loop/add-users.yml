@@ -1,0 +1,21 @@
+---
+- name: Add multiple users to target machine
+  hosts: remote_host
+  become: true
+  vars:
+    users_to_add:
+      - name: Bob
+        password: dxdog
+      - name: John
+        password: testx
+      # Add more users here if needed
+
+  tasks:
+    - name: Create users
+      user:
+        name: "{{ item.name }}"
+        password: "{{ item.password | password_hash('sha512') }}"  # Passwords should be hashed
+        state: present
+      loop: "{{ users_to_add }}"
+
+
